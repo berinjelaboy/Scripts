@@ -1,0 +1,28 @@
+SFTP server on CentOS 7
+
+groupadd sftp_users
+useradd -g sftp_users -d /upload -s /sbin/nologin indominus
+passwd indominus
+mkdir -p /data/indominus/upload
+chown -R root:root /data/indominus
+chmod 755 /data/indominus
+chown indominus: /data/indominus/upload
+chmod 750 /data/indominus/upload/
+usermod -d /data/indominus/upload/ indominus
+nano /etc/ssh/sshd_config
+At the bottom of that file, add the following:
+
+	Match Group sftp_users
+	ChrootDirectory /data/%u
+	ForceCommand internal-sftp
+	Save and close that file. Restart SSH with the command:
+
+systemctl restart sshd
+
+util:
+https://www.techrepublic.com/article/how-to-set-up-an-sftp-server-on-linux/
+
+if get error "port 22: Broken pipe Couldn't read packet: Connection reset by peer" do:
+https://unix.stackexchange.com/questions/542440/how-does-chrootdirectory-and-a-users-home-directory-work-together/542507#542507
+
+

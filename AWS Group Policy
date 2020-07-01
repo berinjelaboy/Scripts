@@ -1,0 +1,37 @@
+AWS Group Policy
+- Essa politica restringe o acesso do usuário do grupo a somente uma bucket (triberg-bucket).
+- O usuário pode ler e escrever, mas não pode mudar as permissões.
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:ListAllMyBuckets"
+      ],
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::triberg-bucket"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::triberg-bucket/*"
+      ]
+    }
+  ]
+}

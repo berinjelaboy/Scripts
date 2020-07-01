@@ -1,0 +1,70 @@
+SSH Key 
+How To Create SSH Keys With PuTTY to Connect to CentOS7
+April 21, 2018 The Geek Decoder
+Generating OpenSSH-compatible Keys for Use with PuTTY
+
+To generate a set of RSA keys with PuTTYgen:
+
+Start the PuTTYgen utility, by double-clicking on its .exe file;
+For Type of key to generate, select RSA;
+In the Number of bits in a generated key field, specify either 2048 or 4096 (increasing the bits makes it harder to crack the key by brute-force methods);
+Click the Generate button;
+Move your mouse pointer around in the blank area of the Key section, below the progress bar (to generate some randomness) until the progress bar is full;
+A private/ public key pair has now been generated;
+In the Key comment field, enter any comment you’d like, to help you identify this key pair, later (e.g. your e-mail address; home; office; etc.) — the key comment is particularly useful in the event you end up creating more than one key pair;
+Optional: Type a passphrase in the Key passphrase field & re-type the same passphrase in the Confirm passphrase field (if you would like to use your keys for automated processes, however, you should not create a passphrase);
+Click the Save public key button & choose whatever filename you’d like (some users create a folder in their computer named my_keys);
+Click the Save private key button & choose whatever filename you’d like (you can save it in the same location as the public key, but it should be a location that only you can access and that you will NOT lose! If you lose your keys and have disabled username/password logins, you will no longer be able log in!);
+Right-click in the text field labeled Public key for pasting into OpenSSH authorized_keys file and choose Select All;
+Right-click again in the same text field and choose Copy.
+NOTE: PuTTY and OpenSSH use different formats for public SSH keys. If the SSH Key you copied starts with “—- BEGIN SSH2 PUBLIC KEY …”, it is in the wrong format. Be sure to follow the instructions carefully. Your key should start with “ssh-rsa AAAA ….”
+Save The Public Key On The Server
+
+Now, you need to paste the copied public key in the file ~/.ssh/authorized_keys on your server.
+
+Log in to your destination server; see How to Log Into Your Droplet with PuTTY (for windows users)
+If your SSH folder does not yet exist, create it manually:
+
+mkdir ~/.ssh
+chmod 0700 ~/.ssh
+touch ~/.ssh/authorized_keys
+chmod 0644 ~/.ssh/authorized_keys
+
+Paste the SSH public key into your ~/.ssh/authorized_keys file (see Installing and Using the Vim Text Editor on an Cloud Server):
+
+nano ~/.ssh/authorized_keys
+
+Create a PuTTY Profile to Save Your Server’s Settings
+In PuTTY, you can create (and save) profiles for connections to your various SSH servers, so you don’t have to remember, and continually re-type, redundant information.
+Start PuTTY by double-clicking its executable file;
+PuTTY’s initial window is the Session Category (navigate PuTTY’s various categories, along the left-hand side of the window);
+In the Host Name field, enter the IP address of your VPS or its fully qualified domain name (FQDN);
+Enter the port number in the Port field (for added security, consider changing your server’s SSH port to a non-standard port.
+Select SSH under Protocol;
+Along the left-hand side of the window, select the Data sub-category, under Connection;
+Specify the username that you plan on using, when logging in to the SSH server, and whose profile you’re saving, in the Auto-login username field;
+Expand the SSH sub-category, under Connection;
+Highlight the Auth sub-category and click the Browse button, on the right-hand side of the PuTTY window;
+Browse your file system and select your previously-created private key;
+Return to the Session Category and enter a name for this profile in the Saved Sessions field, e.g. user@123.456.78.9 or user@host.yourdomain.tld;
+Click the Save button for the Load, Save or Delete a stored session area.
+Now you can go ahead and log in to user@1.2.3.4 and you will not be prompted for a password. However, if you had set a passphrase on your public key, you will be asked to enter the passphrase at that time (and every time you log in, in the future).
+Disable Username/Password Logins
+
+Once you have verified that your key-based logins are working, you may select to disable username/password logins to achieve better security. To do this, you need to edit your SSH server’s configuration file. On Debian/ Ubuntu systems, this file is located at /etc/ssh/sshd_config.
+
+nano /etc/ssh/sshd_config
+
+Edit the lines, referenced below:
+
+[...]
+PasswordAuthentication no
+[...]
+UsePAM no
+[...]
+
+Save the file. Now, reload the SSH server’s configuration:
+
+sudo reload ssh
+
+186.195.23.52

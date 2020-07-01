@@ -1,0 +1,45 @@
+json syntax
+
+{
+    "templateRules": [
+        {
+            "ruleName": "mccbkp-rule",
+            "scheduleExpression": "cron(0 5 ? * * *)",
+            "startWindowMinutes": 480,
+            "completionWindowMinutes": 10080
+        }
+    ],
+    "signature": "rf6Z35zv1ufalwDeSZ47MneUC1Vs1V+U9+LjMQjDxs0TvomOl5aDR2ZVPScYA/JEiBJ1cx2S6+u7gynYz0JZ4HNK9G66d5PX9/0BTQRdMg7QWJy3vfa0EkVN2arhqYoLqxkISUbkaLUTAe3XRMvERN61nvkxvTRmdcTr9Z06hYpbzbfQYaDGvetePf+6KvoG2ydAw1ySFHgGc5Zjhiv+Xw=="
+}
+
+
+
+{
+  "BackupPlanName": "string",
+  "Rules": [
+    {
+      "RuleName": "string",
+      "TargetBackupVaultName": "string",
+      "ScheduleExpression": "string",
+      "StartWindowMinutes": long,
+      "CompletionWindowMinutes": long,
+      "Lifecycle": {
+        "MoveToColdStorageAfterDays": long,
+        "DeleteAfterDays": long
+      },
+      "RecoveryPointTags": {"string": "string"
+        ...},
+      "CopyActions": [
+        {
+          "Lifecycle": {
+            "MoveToColdStorageAfterDays": long,
+            "DeleteAfterDays": long
+          },
+          "DestinationBackupVaultArn": "string"
+        }
+        ...
+      ]
+    }
+    ...
+  ]
+}
